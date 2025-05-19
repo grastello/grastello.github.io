@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8">
+
+	<!-- favicon and title -->
+	<link rel="icon" type="image/x-icon" href="favicon.png">
+	<title>SAT</title>
+
+	<!-- css -->
+	<link rel="stylesheet" href="fonts.css">
+	<link rel="stylesheet" href="style.css">
+
+	<!-- slideshow script -->
+	<script src="script.js" defer></script>
+
+	<!-- mathjax -->
+	<script src="mathjax/es5/tex-chtml.js" id="mathjax-script" async></script>
+  </head>
+  <body>
+	<div class="page-container">
+	  <nav></nav>
+
+	  <div class="main-content">
+		<div class="slide">
+		  <h1>Soddisfacibilità</h1>
+		</div>
+
+		<div class="slide">
+		  <h2>Il gioco del SIM</h2>
+		  <div class="box">
+			<div class="grid-2">
+			  <div>
+				<ul>
+				  <li>Usando <b>due diversi colori</b> i giocatori a turno connettono due dei 6 vertici.</li>
+				  <li>Ogni linea può essere tracciata solo una volta.</li>
+				  <li>Il primo giocatore a <b>completare un triangolo del proprio colore</b> (si considerano vertici solo i 6 punti di partenza) <b>perde</b>.</li>
+				</ul>
+			  </div>
+			  <img src="rsc/sim.jpg">
+			</div>
+		  </div>
+		</div>
+
+		<div class="slide">
+		  <div class="box">
+			<p style="margin-top: 0px;">
+			  Il gioco del SIM <b>ha sempre un vincitore</b> (non è mai possibile pareggiare), perché?
+			</p>
+		  </div>
+		</div>
+
+		<div class="slide">
+		  <h2>Il problema degli amici e degli sconosciuti</h2>
+
+		  <div class="grid-2">
+			<div class="canvas-container">
+			  <canvas id="friends-and-strangers" width="400px" height="400px">
+			  </canvas>
+			  <button class="icon-button" id="friends-and-strangers-button">
+				<span class="material-icons">refresh</span>
+			  </button>
+			  <script src="friends-and-strangers.js" defer></script>
+			</div>
+			<div class="box">
+			  <p>
+				Ad una festa sono invitate \(6\) persone.
+				Una coppia di invitati può essere una coppia di <b style="color: red;">amici</b> o di <b style="color: blue">sconosciuti</b>.
+				Si osserva che in una festa di questo tipo sono sempre presenti <b>tre reciproci amici oppure tre reciproci sconosciuti</b>.
+				Siamo davanti ad una casualità oppure ad un fenomeno generale?
+			  </p>
+			</div>
+		  </div>
+		</div>
+
+		<div class="slide">
+		  <h2>Da un problema ad un altro</h2>
+
+		  <div class="box">
+			Vogliamo <b>tradurre</b> il problema degli amici e degli sconosciuti in un <b>problema di soddisfacibilità</b> perché è un <b>problema noto e largamente studiato</b>.
+			Abbiamo dunque a disposizione molti strumenti tra cui
+			<ul>
+			  <li>tavole di verità</li>
+			  <li>SAT solver</li>
+			  <li>...</li>
+			</ul>
+
+			Dobbiamo dunque tradurre il problema in una <b>formula</b> della <b>logica proposizionale</b>.
+		  </div>
+		</div>
+
+		<div class="slide">
+		  <h3>Le proposizioni elementari</h3>
+		  <div class="box">
+			<p>Utilizzeremo una proposizione atomica per ogni coppia di persone:</p>
+			<p style="text-align: center;">\(A_{i,j} = \) l'invitato \(i\) e l'invitato \(j\) sono <b>amici</b>.</p>
+			<p>Ricordandoci che se due invitati non sono amici allora sono sconosciuti abbiamo che:</p>
+			<p style="text-align: center;">\(\neg A_{i,j} = \) l'invitato \(i\) e l'invitato \(j\) sono <b>sconosciuti</b>.</p>
+		  </div>
+		</div>
+
+		<div class="slide">
+		  <div class="box">
+			Gli invitati sono \(6\) ma ricordandoci che <b>abbiamo bisogno di una sola proposizione elementare per coppia</b> e che <b>le coppie sono formate da invitati differenti </b> abbiamo un totale di \(15\) proposizioni atomiche.
+			\[\displaylines{A_{1, 2},\ A_{1, 3},\ A_{1, 4},\ A_{1, 5},\ A_{1, 6}, \\ A_{2, 3},\ A_{2, 4},\ A_{2, 5},\ A_{2, 6}, \\ A_{3, 4},\ A_{3, 5},\ A_{3, 6}, \\ A_{4, 5},\ A_{4, 6}, \\ A_{5, 6}}\]
+		  </div>
+		</div>
+
+		<div class="slide">
+		  <h3>Torniamo alla domanda</h3>
+		  <div class="box">
+			<p style="margin-top: 0px;">È sempre vero che in una festa di \(6\) invitati ci sono <b>tre reciproci amici</b> oppure <b>tre reciproci sconosciuti</b>?</p>
+			<p><b>Equivalentemente</b>: è impossibile che in una festa di \(6\) invitati <b>non ci siano</b> né <b>tre reciproci amici</b>, né <b>tre reciproci sconosciuti</b>?</p>
+		  </div>
+		</div>
+
+		<div class="slide">
+		  <div class="box">
+			<p style="margin-top: 0;">Presi tre invitati alla festa \(1, 2, 3\) la seguente formula</p>
+			\[B_{1,2,3} \stackrel{\text{def}}{=} \neg(A_{1, 2} \land A_{2, 3} \land A_{1, 3}) \land \neg(\neg A_{1, 2} \land \neg A_{2, 3} \land \neg A_{1, 3})\]
+			<p>dice che \(1, 2, 3\) non sono né reciproci amici, né reciproci sconosciuti.</p>
+		  </div>
+		</div>
+
+		<div class="slide">
+		  <div class="box">
+			<p style="margin-top: 0px;">Posso fare lo stesso discorso per qualsiasi tripletta di invitati ed ottengo così \(20\) <b>proposizioni</b>, ognuna delle quali, se vera, assicura che una tripletta di invitati non è formata né da reciproci amici, né da reciproci sconosciuti.</p>
+			\[\displaylines{B_{1, 2, 3},\ B_{1, 2, 4},\ B_{1, 2, 5},\ B_{1, 2, 6}, B_{1, 3, 4},\ B_{1, 3, 5},\ B_{1, 3, 6},\ B_{1, 4, 5},\ B_{1, 4, 6},\ B_{1, 5, 6},\ \\
+			B_{2, 3, 4},\ B_{2, 3, 5},\ B_{2, 3, 6},\ B_{2, 4, 5},\ B_{2, 4, 6},\ B_{2, 5, 6},\ \\
+			B_{3, 4, 5},\ B_{3, 4, 6},\ B_{3, 5, 6},\ \\
+			B_{4, 5, 6}}\]
+			<p>
+			  La proposizione \(P\) che ottengo come <b>congiunzione</b> di tutte le \(B_{i, j, k}\) è dunque la proposizione che recita <b>"non ci sono né tre reciproci amici, né tre reciproci sconosciuti"</b>.
+			</p>
+			\[P \stackrel{\text{def}}{=} B_{1,2,3} \land B_{1,2,4} \land B_{1,2,5} \land \ldots \land B_{3,4,6} \land B_{3, 5, 6} \land B_{4, 5, 6}\]
+		  </div>
+		</div>
+
+		<div class="slide">
+		  <div class="box">
+			<img style="margin-top: var(--small-page-padding);" src="rsc/mega-formula.png">
+		  </div>
+
+		  <div class="box">
+			<p style="margin-top: 0px;">
+			  Se riusciamo a dimostrare che la proposizione \(P\) è <b>insoddisfacibile</b> (i.e. è una <b>contraddizione</b>) allora abbiamo dimostrato la nostra congettura.
+			  Ma il problema non è approcciabile manualmente tramite le <b>tavole di verità</b> perché avremmo a che fare con una tabella di
+			  \[2^{15} = 32768\]
+			  righe.
+			</p>
+		  </div>
+		</div>
+
+		<div class="slide">
+		  <h3>MiniSAT</h3>
+
+		  <div class="box">
+			<ul>
+			<li>Tradurre il problema in un <a href="rsc/friends-and-strangers.txt" target="_blank">file</a> formato <b>DIMACS</b>;</li>
+			<li>dare il file in pasto ad un <b>SAT solver</b> come <a href="https://www.msoos.org/cryptominisat" target="_blank">CryptoMiniSat5</a>;</li>
+			<li>il software determina se la formula è soddisfacibile o meno.</li>
+			</ul>
+		  </div>
+		</div>
+		
+		<div class="slide">
+			<div class="box">
+				<p style="margin-top: 0;">
+				La formula \(P\) è <b>insoddisfacibile</b> dunque:
+				</p>
+				<ul>
+				<li>non è possibile, in una festa con \(6\) (o più) invitati, non avere <b>tre reciproci amici</b> oppure <b>tre reciproci sconosciuti</b>;</li>
+				<li>non è possibile che una partita di SIM <b>termini in un pareggio</b>.
+				</ul>
+			</div>
+		</div>
+
+		<div class="slide">
+			<h2>La teoria di Ramsey</h2>
+			<div class="box">
+				Quale è il numero <b>minimo</b> di invitati per avere \(n\) <b>reciproci amici</b> oppure \(m\) <b>reciproci sconosciuti</b>?
+			</div>
+		</div>
+
+		<div class="slide">
+			<div class="grid-2">
+				<div class="box">
+					<p>
+					Nel caso di \(n = m = 3\) abbiamo visto che sono sufficienti \(6\) invitati.
+					Se abbiamo solo \(5\) invitati invece è possibile che non si siano né <b>tre reciproci amici</b>, né <b>tre reciproci sconosciuti</b>; come mostra l'immagine.
+					\[R(3, 3) = 6\]
+					</p>
+				</div>
+				<img src="rsc/counterexample.png">
+			</div>
+		</div>
+
+		<div class="slide">
+			<h3>Teorema di Ramsey</h3>
+			<div class="box">
+				Dati due numeri interi \(n\), \(m\) esiste sempre un numero \(R(n,m)\), detto <b>numero di Ramsey</b>, tale che, se in una festa abbiamo almeno \(R(n,m)\) persone allora ci saranno \(n\) <b>reciproci amici</b> oppure \(m\) <b>reciproci sconosciuti</b>.
+			</div>
+		</div>
+
+		<div class="slide">
+		  <div class="grid-3">
+			<div class="box">
+			  \[R(3, 3) = 6\]
+			</div>
+			<div class="box">
+			  \[R(4, 4) = 18\]
+			</div>
+			<div class="box">
+			  \[43 \leq R(5, 5) \leq 46\]
+			</div>
+		  </div>
+
+		  <div class="box">
+			<p style="margin-top: 0px;"><i>
+				Il limite inferiore \(43\) per \(R(5, 5)\) risale al 1989.
+				Il limite superiore \(46\), invece, è stato dimostrato solo nel settembre del 2024.
+				La dimostrazione utilizza, in alcune delle sue parti, un SAT solver.
+			</i></p>
+		  </div>
+		</div>
+
+		<div class="slide">
+		  <div class="box">
+			<img src="rsc/ramsey-numbers.png">
+		  </div>
+		</div>
+
+		<div class="slide">
+		  <div class="grid-2" style="grid-template-columns: 2fr 1fr;">
+			<div class="box">
+			  <p>
+				"Immaginate una forza aliena, enormemente più potente di noi, che atterrata sulla terra pretenda il valore di \(R(5, 5)\), altrimenti distruggerà il nostro pianeta.
+				In tal caso dovremmo mobilitare tutti i nostri computer e tutti i nostri matematici per tentare di trovare il valore.
+				Se invece ci chiedessero di esibire \(R(6, 6)\)... in tal caso dovremmo tentare di distruggere gli alieni."
+			  </p>
+			</div>
+
+			<img src="rsc/erdos.jpg">
+		  </div>
+		</div>
+
+		<div class="slide" style="display: grid; place-items: center;">
+		  <img src="rsc/crash.png" style="width: 50%;">
+		</div>		
+
+		<div class="slide">
+		  <p><b><i>Fine.<i></b></p>
+		</div>
+
+		<!-- <script src="calcs.js" defer></script> -->
+	  </div>
+	</div>
+  </body>
+</html>
