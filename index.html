@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <style>
+        @font-face {font-family: "fira-code"; src: url("./fira-code.woff2") format("woff2");}
+        body {background: #f2f2f2; color: #444444; font-family: "fira-code"; font-size: 16px; line-height: 1.8; text-shadow: 0 1px 0 #ffffff;}
+        .parent {display: grid; place-items: center; height: 100vh}
+        #clock {font-size: 500px;}
+    </style>
+    </head>
+    <body onload="startTime()">
+    <div class="parent"><div id="clock"></div></div>
+
+    <script>
+    function startTime() {
+      const today = new Date();
+      let h = today.getHours();
+      let m = today.getMinutes();
+      // let s = today.getSeconds();
+      m = checkTime(m);
+      // s = checkTime(s);
+      document.getElementById('clock').innerHTML =  h + ":" + m;
+      setTimeout(startTime, 1000);
+    }
+
+    function checkTime(i) {
+      if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+      return i;
+    }
+    </script>
+    </body>
+</html>
