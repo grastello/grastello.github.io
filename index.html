@@ -1,32 +1,50 @@
 <!DOCTYPE html>
 <html>
-    <head>
+  <head>
     <style>
-        @font-face {font-family: "fira-code"; src: url("./fira-code.woff2") format("woff2");}
-        body {background: #f2f2f2; color: #444444; font-family: "fira-code"; font-size: 16px; line-height: 1.8; text-shadow: 0 1px 0 #ffffff;}
-        .parent {display: grid; place-items: center; height: 100vh}
-        #clock {font-size: 500px;}
+      /* Font and aesthetics. */
+      @font-face {font-family: "fira-code"; src: url("./fira-code.woff2") format("woff2");}
+      body {background: #f2f2f2; color: #444444; font-family: "fira-code"; font-size: 16px; line-height: 1; text-shadow: 0 1px 0 #ffffff;}
+
+      /* Center everything. */
+      html, body {height: 100%; margin: 0;}
+      body {display: flex; justify-content: center; align-items: center;}
+
+      /* Fields we fill out with date and time. */
+      #clock {margin: 0px; font-size: 27vw; line-height: 1}
+      #date {margin: 0px; font-size: 4vw; text-align: left;}
     </style>
-    </head>
-    <body onload="clockNext()">
-    <div class="parent"><div id="clock"></div></div>
+  </head>
+  <body onload="clockNext()">
+    <table>
+      <tr><td><p id="clock"></p></td></tr>
+      <tr><td><p id="date"></p></td></tr>
+    </table>
 
     <script>
-    function clockNext() {
-      const today = new Date();
-      let h = today.getHours();
-      let m = today.getMinutes();
-      // let s = today.getSeconds();
-      m = format(m);
-      // s = format(s);
-      document.getElementById('clock').innerHTML =  h + ":" + m;
-      setTimeout(clockNext, 1000);
-    }
+      function clockNext() {
+	  const today = new Date();
+	  let h = today.getHours();
+	  let m = today.getMinutes();
+	  // let s = today.getSeconds();
+	  m = format(m);
+	  // s = format(s);
+	  document.getElementById('clock').innerHTML =  h + ":" + m;
 
-    function format(i) {
-      if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
-      return i;
-    }
+	  let y = today.getFullYear();
+	  let mm = today.getMonth();
+	  mm = format(mm);
+	  let d = today.getDate();
+	  d = format(d);
+	  document.getElementById('date').innerHTML = d + "/" + mm + "/" + y;
+
+	  setTimeout(clockNext, 1000);
+      }
+
+      function format(i) {
+	  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+	  return i;
+      }
     </script>
-    </body>
+  </body>
 </html>
